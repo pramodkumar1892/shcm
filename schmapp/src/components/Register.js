@@ -8,6 +8,7 @@
 
 import React, { useState } from 'react';
 import {StyleSheet} from 'react-native';
+import Snackbar from 'react-native-snackbar';
 import {Button, Container, Content, Form, Item, Input, Label, Text} from 'native-base';
 import Header from './Header'
 import { register } from './../actions/auth.action'
@@ -52,7 +53,22 @@ const App = ({ navigation }) => {
     })
   }
   const onSubmit = () => {
-    console.log(registerState)
+    register(registerState, () => {
+      Snackbar.show({
+        text: 'Registeration Success!',
+        duration: Snackbar.LENGTH_SHORT,
+        textColor: '#fff',
+        backgroundColor: 'green'
+      });
+    !!navigation && navigation.goBack()
+    }, () => {
+      Snackbar.show({
+        text: 'Registeration Failed!',
+        duration: Snackbar.LENGTH_SHORT,
+        textColor: '#fff',
+        backgroundColor: 'red'
+      });
+    })
   }
   return (
     <Container style={styles.container}>

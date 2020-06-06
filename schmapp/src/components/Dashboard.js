@@ -172,7 +172,7 @@ const Dashboard = ({ navigation }) => {
   }
   return (
     <Container style={styles.container}>
-      <Header navigation={navigation} title='Dashboard' />
+      <Header navigation={navigation} title='Dashboard' showLogOut />
       <Content style={styles.content}>
           <List>
             {stub.map(item => (<View key={item.id}>

@@ -22,20 +22,23 @@ async function fetch(url, tokencConfig = {}) {
   throw error
 }
 
-async function post(url, data, tokencConfig = {}) {
+function post(url, data, tokencConfig = {}) {
   const baseConfig = {
     headers: {
       'Content-Type': 'application/json',
     },
     ...tokencConfig,
   }
-  const response = await axiosInstance.post(url, data, baseConfig)
-  if (response.status >= 200 && response.status < 300) {
+  return axios.post(url, data, baseConfig).then((response) => {
+    if (response.status >= 200 && response.status < 300) {
     return { data: response.data, status: response.status }
   }
   const error = new Error(response.statusText)
   error.response = response
   throw error
+  }).catch((err) => {
+    throw err
+  })
 }
 
 async function put(url, data, tokencConfig = {}) {

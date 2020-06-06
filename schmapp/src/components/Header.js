@@ -10,14 +10,15 @@ import {
   Icon,
   Title,
 } from 'native-base';
-const styles = StyleSheet.create({
-  container: {
-    backgroundColor: 'red',
-},
-});
-const AppHeader = ({ showBack=false, showMenu=false, navigation, title }) => {
+import { setAuth } from './../actions/auth.action'
+
+const AppHeader = ({ showBack=false, showLogOut=false, navigation, title }) => {
 		const onBack = function () {
 			!!navigation && navigation.goBack()			
+    }
+    const onLogOut = async () => {
+      await setAuth({})
+      navigation.navigate('Login')
 		}
     return (
         <Header>
@@ -29,9 +30,9 @@ const AppHeader = ({ showBack=false, showMenu=false, navigation, title }) => {
           <Body>
 					<Title>{title}</Title>
           </Body>
-          {showMenu && <Right>
-            <Button transparent>
-              <Icon name="menu" />
+          {showLogOut && <Right>
+            <Button transparent onPress={onLogOut}>
+              <Icon name="log-out" />
             </Button>
           </Right>}
         </Header>

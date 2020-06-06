@@ -6,12 +6,12 @@
  * @flow strict-local
  */
 
-import React from 'react';
+import React, { useState } from 'react';
 import {StyleSheet} from 'react-native';
-
-import {Colors} from 'react-native/Libraries/NewAppScreen';
-import {Button, Container, Content, Form, Item, Input, Text} from 'native-base';
+import Snackbar from 'react-native-snackbar';
+import {Button, Container, Label, Content, Form, Item, Input, Text} from 'native-base';
 import Header from './Header'
+import { login } from './../actions/auth.action'
 
 const styles = StyleSheet.create({
     container: {
@@ -38,6 +38,34 @@ const styles = StyleSheet.create({
   });
 
 const App = ({ navigation  }) => {
+  const [registerState, setRegisterState] = useState({
+    email: '',
+    password: ''
+  })
+  const onChange = (field) => (value) => {
+    setRegisterState({
+      ...registerState,
+      [field]: value
+    })
+  }
+  const onSubmit = () => {
+    login(registerState, () => {
+      Snackbar.show({
+        text: 'SignIn Success!',
+        duration: Snackbar.LENGTH_SHORT,
+        textColor: '#fff',
+        backgroundColor: 'green'
+      });
+      navigation.navigate('Dashboard')
+    }, () => {
+      Snackbar.show({
+        text: 'SignIn Failed!',
+        duration: Snackbar.LENGTH_SHORT,
+        textColor: '#fff',
+        backgroundColor: 'red'
+      });
+    })
+  }
 	const onRegister = function () {
 		navigation.navigate('Register')
 	}
@@ -46,13 +74,15 @@ const App = ({ navigation  }) => {
       <Header title='Signin' />
       <Content contentContainerStyle={styles.content}>
         <Form style={styles.form}>
-          <Item style={styles.margin10}>
-            <Input placeholder="Username" />
+          <Item floatingLabel style={styles.margin10}>
+            <Label>Email</Label>
+            <Input onChangeText={onChange('email')} name='email' value={registerState.email} placeholder="Email" />
           </Item>
-          <Item style={styles.margin10}>
-            <Input placeholder="Password" />
+          <Item floatingLabel style={styles.margin10}>
+            <Label>Password</Label>
+            <Input onChangeText={onChange('password')} name='password' value={registerState.password} secureTextEntry={true} placeholder="Password" />
           </Item>
-          <Button style={styles.margin10} block>
+          <Button onPress={onSubmit} style={styles.margin10} block>
             <Text>Login</Text>
           </Button>
           <Button onPress={onRegister} style={styles.margin10} block>
