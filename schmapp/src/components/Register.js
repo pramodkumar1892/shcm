@@ -8,7 +8,7 @@
 
 import React, { useState } from 'react';
 import {StyleSheet} from 'react-native';
-import {Button, Container, Content, Form, Item, Input, Text} from 'native-base';
+import {Button, Container, Content, Form, Item, Input, Label, Text} from 'native-base';
 import Header from './Header'
 import { register } from './../actions/auth.action'
 
@@ -59,19 +59,24 @@ const App = ({ navigation }) => {
       <Header showBack navigation={navigation} title='Register' />
       <Content contentContainerStyle={styles.content}>
         <Form style={styles.form}>
-          <Item style={styles.margin10}>
+          <Item floatingLabel style={styles.margin10}>
+            <Label>First Name</Label>
             <Input onChangeText={onChange('first_name')} name='first_name' value={registerState.first_name} placeholder="FirstName" />
           </Item>
-          <Item style={styles.margin10}>
+          <Item floatingLabel style={styles.margin10}>
+            <Label>Last Name</Label>
             <Input onChangeText={onChange('last_name')} name='last_name' value={registerState.last_name} placeholder="LastName" />
           </Item>
-          <Item style={styles.margin10}>
+          <Item floatingLabel style={styles.margin10}>
+            <Label>Email</Label>
             <Input onChangeText={onChange('email')} name='email' value={registerState.email} placeholder="Email" />
           </Item>
-					<Item style={styles.margin10}>
+					<Item floatingLabel style={styles.margin10}>
+            <Label>Password</Label>
             <Input onChangeText={onChange('password')} name='password' value={registerState.password} secureTextEntry={true} placeholder="Password" />
           </Item>
-					<Item style={styles.margin10}>
+					<Item floatingLabel style={styles.margin10}>
+            <Label>Confirm Password</Label>
             <Input onChangeText={onChange('confirm_password')} name='confirm_password' value={registerState.confirm_password} secureTextEntry={true} placeholder="Confirm Password" />
           </Item>
           <Button onPress={onSubmit} style={styles.margin10} block>
