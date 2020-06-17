@@ -2,6 +2,12 @@ import { post } from './../api/httpcliennt'
 import { AsyncStorage } from 'react-native';
 import get from 'lodash.get'
 
+export const userAction = (data) => (dispatch) =>
+  dispatch({
+    type: 'USER',
+    data,
+  })
+
 export const setAuth = async (data) => {
   try {
     await AsyncStorage.setItem(

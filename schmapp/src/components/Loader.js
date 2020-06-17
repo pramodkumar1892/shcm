@@ -7,10 +7,11 @@
  */
 
 import React, { useState, useEffect } from 'react';
+import { connect } from 'react-redux'
 import isEmpty from 'lodash.isempty'
 import {StyleSheet, ActivityIndicator} from 'react-native';
 import { Container, Content, Spinner} from 'native-base';
-import { getAuth } from './../actions/auth.action'
+import { getAuth, userAction } from './../actions/auth.action'
 
 const styles = StyleSheet.create({
     container: {
@@ -19,12 +20,13 @@ const styles = StyleSheet.create({
     }
   });
 
-const Loader = ({ navigation  }) => {
+const Loader = ({ navigation, userAction }) => {
     useEffect(async () => {
 		const auth = await getAuth()
 		if (isEmpty(auth)) {
 			navigation.navigate('Login')
 		} else {
+      userAction(auth)
 			navigation.navigate('Dashboard')
 		}
 	}, [])
@@ -35,4 +37,8 @@ const Loader = ({ navigation  }) => {
   );
 };
 
-export default Loader;
+const mapStateToProps = (state) => ({})
+
+export default connect(mapStateToProps, {
+  userAction
+})(Loader)

@@ -6,10 +6,14 @@
  * @flow strict-local
  */
 
-import React, { useState, Fragment, useRef } from 'react';
+import React, { useState, Fragment, useRef, useEffect } from 'react';
+import { connect } from 'react-redux'
+import moment from 'moment'
 import {StyleSheet, View, Image, TouchableWithoutFeedback, Animated} from 'react-native';
 import {Container, Content, List, ListItem, Text } from 'native-base';
 import Header from './Header'
+import { mapHistory, mapTapPayload } from './../utils'
+import { fetchTap, enterTap } from './../actions/tap.action'
 
 const stub = [
   {
@@ -142,8 +146,21 @@ const styles = StyleSheet.create({
     }
   });
 
-const Dashboard = ({ navigation }) => {
+const Dashboard = ({ navigation, fetchTap, user, enterTap }) => {
   const pressAnim = useRef(new Animated.Value(1)).current
+  const [tapData, setTapData] = useState([])
+  useEffect(() => {
+    fetchHistory()
+  }, [])
+  const fetchHistory = function (callback) {
+    fetchTap(user.id, (history) => {
+      const modifiedHistory = mapHistory(history)
+      setTapData(modifiedHistory)
+      if (typeof callback === 'function') {
+        callback(modifiedHistory)
+      }
+    })
+  }
   const handlePressIn = function () {
     Animated.spring(pressAnim, {
       toValue: .5,
@@ -161,29 +178,29 @@ const Dashboard = ({ navigation }) => {
   const animatedStyle = {
     transform: [{ scale: pressAnim}]
   }
-  const onChange = (field) => (value) => {
-    setRegisterState({
-      ...registerState,
-      [field]: value
-    })
-  }
   const onSubmit = () => {
-    console.log('loooooong')
+    fetchHistory((history) => {
+      const payLoad = mapTapPayload(history, user.id)
+      enterTap(payLoad, () => {
+        fetchHistory()
+      })
+    }) 
   }
+
   return (
     <Container style={styles.container}>
       <Header navigation={navigation} title='Dashboard' showLogOut />
       <Content style={styles.content}>
           <List>
-            {stub.map(item => (<View key={item.id}>
+            {tapData.map(item => (<View key={item.id}>
               <ListItem style={styles.listHeader} itemDivider>
                 <Text style={styles.listHeaderText}>{item.date}</Text>
-                <Text style={styles.listHeaderText}>{item.weekday}</Text>
+                <Text style={styles.listHeaderText}>{item.weekDay}</Text>
               </ListItem>
               {item.tapCollection.map(tapItem => 
                 (<ListItem style={styles.listItem} key={tapItem.id}>
-                  <Text>{`Tap in - ${tapItem.tapin}`}</Text>
-                  <Text>{`Tap out - ${tapItem.tapout}`}</Text>
+                  <Text>{`Tap in - ${!!tapItem.tap_in ? moment(tapItem.tap_in).format('h:mm A') : ''}`}</Text>
+                  <Text>{`Tap out - ${!!tapItem.tap_out ? moment(tapItem.tap_out).format('h:mm A') : 'TBA'}`}</Text>
                 </ListItem>))}
             <ListItem style={styles.listFooter} itemDivider>
               <Text style={styles.listFooterText} >{item.workDuration}</Text>
@@ -206,4 +223,14 @@ const Dashboard = ({ navigation }) => {
   );
 };
 
-export default Dashboard;
+const mapStateToProps = (state) => ({
+  user: state.user,
+})
+
+/**
+ *  connect function of redux
+ */
+export default connect(mapStateToProps, {
+  fetchTap,
+  enterTap
+})(Dashboard)
