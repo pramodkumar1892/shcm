@@ -35,7 +35,7 @@ export const register = (
   ) => {
       const updatedPayload = {
         ...payload,
-        active: 1,
+        active: 0,
       }
       const url = 'http://shcm-project.xyz/api/user'
       return post(url, updatedPayload, {}).then(() => {
