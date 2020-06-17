@@ -1,0 +1,186 @@
+$lightNavy: #2c6fcd; /*Heading color*/
+$lightGrey: #a1a0ae;
+$mutedColor: #888888;
+$coffeeColor: #343434;
+$whiteColor: #fff;
+$appBackground: #f0f0f7;
+$lightBorder: #e8e8e8;
+$defaultGrey: #e0e0e0;
+$dangerColor: #f44336;
+$alignAuto: auto;
+$fullWidth: 100%;
+$fullHeight: 100%;
+$fortyWidth: 60%;
+$sixtyWidth: 60%;
+$seventyWidth: 70%;
+$yellowLight: #f4e7be;
+$lightRed: #f6c3c9;
+$blueMain: #2c6fcd;
+$denim: #1B58B5;
+$offBlue: #C8D6ED;
+$danube: #6D94D0;
+$dullBlue: #D9E7FC;
+$dullGreen: #D3EBE7;
+$transparent: transparent;
+
+// status color
+$status-complete: #19865a;
+$status-pending: #f1bd15;
+$status-active: #3865a3;
+$status-close: #87a2c7;
+$status-cancel:#e10011;
+$lightGreen:#c9e0dd;
+
+
+$alignLeft: left;
+$alignRight: right;
+$alignCenter: center;
+$alignAuto: auto;
+$alignTop: top;
+$alignBottom: bottom;
+$alignMiddle: middle;
+
+$spacingZero: 0;
+$spacingOne: 1rem;
+$spacingTwo: 2rem;
+
+$positionAbsolute: absolute;
+$positionRelative: relative;
+$positionStatic: static;
+$positionFixed: fixed;
+
+// Display
+$displayFlex: flex;
+$displayBlock: block;
+$displayInlineBlock: inline-block;
+$spaceBetween: space-between;
+$flexDirectionColumn: column;
+$flexDirectionRow: row;
+$alignItemsStart: flex-start;
+$alignItemsEnd: flex-end;
+// Cursor
+$pointer: pointer;
+$cursorMove: move;
+
+// None value
+$none: none;
+
+// Mixin display row
+@mixin display-flex-row {
+  display: $displayFlex ;
+  flex-direction: $flexDirectionRow;
+}
+// Mixin display column
+@mixin display-flex-column {
+  display: $displayFlex ;
+  flex-direction: $flexDirectionColumn;
+}
+
+@mixin auth-background {
+  background-color: $transparent;
+  background-repeat: no-repeat;
+  background-position: center bottom -230px;
+}
+@mixin dashboard-welcome {
+  background-color: $blueMain;
+  background-repeat: no-repeat;
+  background-position: center center;
+}
+
+@mixin auth-container {
+  background: $whiteColor;
+  padding: 30px;
+}
+/* borders */
+@mixin border($direction, $width, $style, $color) {
+  border-#{$direction}: $width $style $color;
+}
+
+@mixin border-default {
+  border: 1px solid $lightBorder;
+}
+@mixin box-shadow {
+   box-shadow: 0px 2px 4px -1px rgba(0,0,0,0.2), 0px 4px 5px 0px rgba(0,0,0,0.14), 0px 1px 10px 0px rgba(0,0,0,0.12);
+}
+
+/* Modal css */
+@mixin modal-base {
+  background-color: $whiteColor;
+  box-shadow: 0px 3px 5px -1px rgba(0, 0, 0, 0.2),
+  0px 5px 8px 0px rgba(0, 0, 0, 0.14), 0px 1px 14px 0px rgba(0, 0, 0, 0.12);
+  outline: 0;
+  padding: 0;
+}
+@mixin badge-label{
+  border-radius: 5px;
+  font-size: 0.8rem;
+  color:$whiteColor;
+  padding: 3px 8px;
+}
+
+/* SCSS variables to store breakpoints media*/
+$mediaXlWidth: 1920px;
+$mediaLgWidth: 1280px;
+$mediaMdWidth: 960px;
+$mediaSmWidth: 600px;
+$mediaXsWidth: 320px;
+$mediaLaptopWidth: 1440px;
+
+@mixin for-phone-only {
+  @media (max-width: 599px) { @content; }
+}
+@mixin for-touch-devices-only {
+  @media (max-width: 1024px) { @content; }
+}
+@mixin for-tablet-portrait-up {
+  @media (min-width: 600px) { @content; }
+}
+@mixin for-tablet-landscape-up {
+  @media (min-width: 900px) { @content; }
+}
+@mixin for-desktop-up {
+  @media (min-width: 1200px) { @content; }
+}
+@mixin for-big-desktop-up {
+  @media (min-width: 1800px) { @content; }
+}
+
+@mixin overflow-ellipsis {
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+  display: $displayInlineBlock;
+}
+@mixin status-label{
+  color:$whiteColor;
+  padding:4px 8px;
+  font-size: 1em;
+  border-radius: 30px;
+  display: $displayInlineBlock;
+}
+
+* {
+  list-style: none;
+}
+
+ul {
+  margin: $spacingZero;
+  padding: $spacingZero;
+}
+
+/* Change the white to any color ;) */
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+input:-webkit-autofill:active {
+  -webkit-box-shadow: 0 0 0 30px $whiteColor inset !important;
+}
+
+html,
+body {
+  height: 100vh;
+}
+
+
+
+

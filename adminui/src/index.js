@@ -2,11 +2,18 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
 import App from './App';
+import { SnackbarProvider } from 'notistack'
 import * as serviceWorker from './serviceWorker';
 
 ReactDOM.render(
   <React.StrictMode>
-    <App />
+    <SnackbarProvider
+        maxSnack={5}
+        anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
+        preventDuplicate
+      >
+      <App />
+    </SnackbarProvider>
   </React.StrictMode>,
   document.getElementById('root')
 );
