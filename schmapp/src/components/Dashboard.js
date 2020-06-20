@@ -18,8 +18,6 @@ import {
   TouchableWithoutFeedback,
   Animated,
   Vibration,
-  RefreshControl,
-  ScrollView,
 } from 'react-native';
 import {Container, Content, List, ListItem, Text} from 'native-base';
 import Header from './Header';
@@ -163,12 +161,13 @@ const Dashboard = ({navigation, fetchTap, user, enterTap}) => {
   const [tapData, setTapData] = useState([]);
   const [showDialog, setShowDialog] = useState(false);
   const [reason, setReason] = useState(false);
-  const [refreshing, setRefreshing] = useState(false);
+  // const [apiErr, setApiErr] = useState('');
   useEffect(() => {
     fetchHistory();
-  }, [fetchHistory]);
+  }, []);
   const fetchHistory = function(callback) {
     fetchTap(user.id, history => {
+      // setApiErr(JSON.stringify(history));
       const modifiedHistory = mapHistory(history);
       setTapData(modifiedHistory);
       if (typeof callback === 'function') {
@@ -176,12 +175,12 @@ const Dashboard = ({navigation, fetchTap, user, enterTap}) => {
       }
     });
   };
-  const onRefresh = () => {
-    setRefreshing(true);
-    fetchHistory(() => {
-      setRefreshing(false);
-    });
-  };
+  // const onRefresh = () => {
+  //   setRefreshing(true);
+  //   fetchHistory(() => {
+  //     setRefreshing(false);
+  //   });
+  // };
   const handlePressIn = function() {
     Animated.spring(pressAnim, {
       toValue: 0.5,
@@ -207,7 +206,10 @@ const Dashboard = ({navigation, fetchTap, user, enterTap}) => {
       if (
         !isEmpty(todayHistory) &&
         todayHistory.tapCollection.length > 3 &&
-        isEmpty(todayHistory.tapCollection[3].tap_out)
+        isEmpty(
+          todayHistory.tapCollection[todayHistory.tapCollection.length - 1]
+            .tap_out,
+        )
       ) {
         setShowDialog(true);
       } else {
@@ -233,41 +235,36 @@ const Dashboard = ({navigation, fetchTap, user, enterTap}) => {
   return (
     <Container style={styles.container}>
       <Header navigation={navigation} title="Dashboard" showLogOut />
-      <ScrollView
-        contentContainerStyle={styles.scrollView}
-        refreshControl={
-          <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
-        }>
-        <Content style={styles.content}>
-          <List>
-            {tapData.map(item => (
-              <View key={item.id}>
-                <ListItem style={styles.listHeader} itemDivider>
-                  <Text style={styles.listHeaderText}>{item.date}</Text>
-                  <Text style={styles.listHeaderText}>{item.weekDay}</Text>
+      <Content style={styles.content}>
+        {/* <Text>{apiErr}</Text> */}
+        <List>
+          {tapData.map(item => (
+            <View key={item.id}>
+              <ListItem style={styles.listHeader} itemDivider>
+                <Text style={styles.listHeaderText}>{item.date}</Text>
+                <Text style={styles.listHeaderText}>{item.weekDay}</Text>
+              </ListItem>
+              {item.tapCollection.map(tapItem => (
+                <ListItem style={styles.listItem} key={tapItem.id}>
+                  <Text>{`Tap in - ${
+                    tapItem.tap_in
+                      ? moment(tapItem.tap_in).format('h:mm A')
+                      : ''
+                  }`}</Text>
+                  <Text>{`Tap out - ${
+                    tapItem.tap_out
+                      ? moment(tapItem.tap_out).format('h:mm A')
+                      : 'TBA'
+                  }`}</Text>
                 </ListItem>
-                {item.tapCollection.map(tapItem => (
-                  <ListItem style={styles.listItem} key={tapItem.id}>
-                    <Text>{`Tap in - ${
-                      tapItem.tap_in
-                        ? moment(tapItem.tap_in).format('h:mm A')
-                        : ''
-                    }`}</Text>
-                    <Text>{`Tap out - ${
-                      tapItem.tap_out
-                        ? moment(tapItem.tap_out).format('h:mm A')
-                        : 'TBA'
-                    }`}</Text>
-                  </ListItem>
-                ))}
-                <ListItem style={styles.listFooter} itemDivider>
-                  <Text style={styles.listFooterText}>{item.workDuration}</Text>
-                </ListItem>
-              </View>
-            ))}
-          </List>
-        </Content>
-      </ScrollView>
+              ))}
+              <ListItem style={styles.listFooter} itemDivider>
+                <Text style={styles.listFooterText}>{item.workDuration}</Text>
+              </ListItem>
+            </View>
+          ))}
+        </List>
+      </Content>
       <View style={styles.pressView}>
         <TouchableWithoutFeedback
           onPressIn={handlePressIn}

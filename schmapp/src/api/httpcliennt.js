@@ -4,6 +4,7 @@ let axiosInstance = null
 const configurationSetting = () => {
   axiosInstance = axios.create()
   axiosInstance.defaults.baseURL = 'http://shcm-project.xyz'
+  axiosInstance.defaults.timeout = 10000
 }
 
 async function fetch(url, tokencConfig = {}) {

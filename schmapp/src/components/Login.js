@@ -1,3 +1,4 @@
+/* eslint-disable no-shadow */
 /**
  * Sample React Native App
  * https://github.com/facebook/react-native
@@ -7,6 +8,7 @@
  */
 
 import React, {useState} from 'react';
+import {connect} from 'react-redux';
 import {StyleSheet} from 'react-native';
 import Snackbar from 'react-native-snackbar';
 import {
@@ -52,7 +54,7 @@ const styles = StyleSheet.create({
   },
 });
 
-const App = ({navigation}) => {
+const Login = ({navigation, login}) => {
   const onSubmit = values => {
     login(
       values,
@@ -136,4 +138,16 @@ const App = ({navigation}) => {
   );
 };
 
-export default App;
+const mapStateToProps = state => ({
+  user: state.user,
+});
+
+/**
+ *  connect function of redux
+ */
+export default connect(
+  mapStateToProps,
+  {
+    login,
+  },
+)(Login);

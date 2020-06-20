@@ -46,11 +46,13 @@ export const register = (payload, successCallback, failureCallback) => {
     });
 };
 
-export const login = (payload, successCallback, failureCallback) => {
+export const login = (payload, successCallback, failureCallback) => (dispatch) => {
   const url = 'http://shcm-project.xyz/api/signin';
   return post(url, payload, {})
     .then(({data}) => {
-      setAuth(get(data, 'data[0]', {}));
+      const auth = get(data, 'data[0]', {});
+      userAction(auth)(dispatch);
+      setAuth(auth);
       if (typeof successCallback === 'function') {
         successCallback(data);
       }
