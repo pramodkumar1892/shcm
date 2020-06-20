@@ -282,7 +282,7 @@ const Dashboard = ({navigation, fetchTap, user, enterTap}) => {
         value={reason}
         onChange={setReason}
         open={showDialog}
-        onCancel={setReason}
+        onCancel={setShowDialog}
         onSend={onDialogSend}
       />
     </Container>
