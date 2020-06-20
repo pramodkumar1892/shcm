@@ -18,6 +18,8 @@ import {
   TouchableWithoutFeedback,
   Animated,
   Vibration,
+  RefreshControl,
+  ScrollView,
 } from 'react-native';
 import {Container, Content, List, ListItem, Text} from 'native-base';
 import Header from './Header';
@@ -161,6 +163,7 @@ const Dashboard = ({navigation, fetchTap, user, enterTap}) => {
   const [tapData, setTapData] = useState([]);
   const [showDialog, setShowDialog] = useState(false);
   const [reason, setReason] = useState(false);
+  const [refreshing, setRefreshing] = useState(false);
   useEffect(() => {
     fetchHistory();
   }, [fetchHistory]);
@@ -171,6 +174,12 @@ const Dashboard = ({navigation, fetchTap, user, enterTap}) => {
       if (typeof callback === 'function') {
         callback(modifiedHistory);
       }
+    });
+  };
+  const onRefresh = () => {
+    setRefreshing(true);
+    fetchHistory(() => {
+      setRefreshing(false);
     });
   };
   const handlePressIn = function() {
@@ -224,35 +233,41 @@ const Dashboard = ({navigation, fetchTap, user, enterTap}) => {
   return (
     <Container style={styles.container}>
       <Header navigation={navigation} title="Dashboard" showLogOut />
-      <Content style={styles.content}>
-        <List>
-          {tapData.map(item => (
-            <View key={item.id}>
-              <ListItem style={styles.listHeader} itemDivider>
-                <Text style={styles.listHeaderText}>{item.date}</Text>
-                <Text style={styles.listHeaderText}>{item.weekDay}</Text>
-              </ListItem>
-              {item.tapCollection.map(tapItem => (
-                <ListItem style={styles.listItem} key={tapItem.id}>
-                  <Text>{`Tap in - ${
-                    tapItem.tap_in
-                      ? moment(tapItem.tap_in).format('h:mm A')
-                      : ''
-                  }`}</Text>
-                  <Text>{`Tap out - ${
-                    tapItem.tap_out
-                      ? moment(tapItem.tap_out).format('h:mm A')
-                      : 'TBA'
-                  }`}</Text>
+      <ScrollView
+        contentContainerStyle={styles.scrollView}
+        refreshControl={
+          <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+        }>
+        <Content style={styles.content}>
+          <List>
+            {tapData.map(item => (
+              <View key={item.id}>
+                <ListItem style={styles.listHeader} itemDivider>
+                  <Text style={styles.listHeaderText}>{item.date}</Text>
+                  <Text style={styles.listHeaderText}>{item.weekDay}</Text>
                 </ListItem>
-              ))}
-              <ListItem style={styles.listFooter} itemDivider>
-                <Text style={styles.listFooterText}>{item.workDuration}</Text>
-              </ListItem>
-            </View>
-          ))}
-        </List>
-      </Content>
+                {item.tapCollection.map(tapItem => (
+                  <ListItem style={styles.listItem} key={tapItem.id}>
+                    <Text>{`Tap in - ${
+                      tapItem.tap_in
+                        ? moment(tapItem.tap_in).format('h:mm A')
+                        : ''
+                    }`}</Text>
+                    <Text>{`Tap out - ${
+                      tapItem.tap_out
+                        ? moment(tapItem.tap_out).format('h:mm A')
+                        : 'TBA'
+                    }`}</Text>
+                  </ListItem>
+                ))}
+                <ListItem style={styles.listFooter} itemDivider>
+                  <Text style={styles.listFooterText}>{item.workDuration}</Text>
+                </ListItem>
+              </View>
+            ))}
+          </List>
+        </Content>
+      </ScrollView>
       <View style={styles.pressView}>
         <TouchableWithoutFeedback
           onPressIn={handlePressIn}
