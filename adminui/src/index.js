@@ -4,6 +4,8 @@ import './index.css';
 import App from './App';
 import { SnackbarProvider } from 'notistack'
 import * as serviceWorker from './serviceWorker';
+import { Provider } from 'react-redux';
+import store from './store'
 
 ReactDOM.render(
   <React.StrictMode>
@@ -12,7 +14,9 @@ ReactDOM.render(
         anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
         preventDuplicate
       >
-      <App />
+      <Provider store = { store }>
+        <App />
+      </Provider>
     </SnackbarProvider>
   </React.StrictMode>,
   document.getElementById('root')

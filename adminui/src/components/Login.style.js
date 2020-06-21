@@ -9,7 +9,6 @@ import { StyleVariables } from './../helpers/StyleVariable'
 const useStyles = makeStyles((theme) => ({
   root: {
     padding: theme.spacing(0),
-    maxWidth: '100%',
     height: '100vh',
   },
   paper: {
@@ -79,6 +78,11 @@ const useStyles = makeStyles((theme) => ({
   },
   table: {
     minWidth: 650,
+  },
+  modal: {
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center"
   },
 }))
 

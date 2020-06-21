@@ -8,11 +8,12 @@ import {
 	TextField,
 	Typography,
 } from '@material-ui/core'
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 import { makeStyles } from '@material-ui/core/styles';
 import Table from '@material-ui/core/Table';
 import Tooltip from '@material-ui/core/Tooltip'
 import IconButton from '@material-ui/core/IconButton'
+import {connect} from 'react-redux';
 import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
 import TableContainer from '@material-ui/core/TableContainer';
@@ -24,6 +25,7 @@ import ThumbUpAltIcon from '@material-ui/icons/ThumbUpAlt'
 import ThumbUpAltOutlinedIcon from '@material-ui/icons/ThumbUpAltOutlined'
 import Header from './Header'
 import useStyles from './Login.style'
+import { fetchRequests, updateUser } from './../actions/shcm.action'
 
 function createData(first_name, last_name, email) {
   return { first_name, last_name, email };
@@ -34,14 +36,21 @@ const rows = [
   createData('max', 'miller', 'max@aus.com'),
 ];
  
-function Requests(props) { 
-	const classes = useStyles()
+function Requests({ updateUser }) { 
+  const classes = useStyles()
+  const [requests, setRequests] = useState([])
+  useEffect(() => {
+    fetchRequests((data) => {
+      setRequests(data)
+    })
+  }, [])
 	const onApprove = (event) => {
     const dataId = event.currentTarget.id
-  }
-
-  const onReject = (event) => {
-    const dataId = event.currentTarget.id
+    updateUser(dataId, () => {
+      fetchRequests((data) => {
+        setRequests(data)
+      })
+    })
   }
 	const acceptIcon = (row) => {
     return (
@@ -51,28 +60,7 @@ function Requests(props) {
           aria-label='Accept'
           id={row.id}
         >
-          {row.status === 'Approved' || row.status === 'Registered' ? (
             <ThumbUpAltIcon fontSize="small" color="primary" />
-          ) : (
-            <ThumbUpAltOutlinedIcon fontSize="small" color="primary" />
-          )}
-        </IconButton>
-      </Tooltip>
-    )
-  }
-  const rejectIcon = (row) => {
-    return (
-      <Tooltip title='Reject'>
-        <IconButton
-          onClick={onReject}
-          aria-label='Reject'
-          id={row.id}
-        >
-          {row.status === 'Rejected' ? (
-            <ThumbDownAltIcon fontSize="small" color="secondary" />
-          ) : (
-            <ThumbDownOutlinedIcon fontSize="small" color="secondary" />
-          )}
         </IconButton>
       </Tooltip>
     )
@@ -93,7 +81,7 @@ function Requests(props) {
           </TableRow>
         </TableHead>
         <TableBody>
-          {rows.map((row) => (
+          {requests.map((row) => (
             <TableRow key={row.name}>
               <TableCell align="center" component="th" scope="row">
                 {row.first_name}
@@ -101,8 +89,7 @@ function Requests(props) {
               <TableCell align="center">{row.last_name}</TableCell>
               <TableCell align="center">{row.email}</TableCell>
               <TableCell align="center">
-								{acceptIcon({})}
-								{rejectIcon({})}
+								{acceptIcon(row)}
 							</TableCell>
             </TableRow>
           ))}
@@ -114,5 +101,13 @@ function Requests(props) {
 	)
 	// }
 }
-export default Requests
+const mapStateToProps = state => ({
+});
+
+export default connect(
+  mapStateToProps,
+  {
+    updateUser,
+  },
+)(Requests);
   

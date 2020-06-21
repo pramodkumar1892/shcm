@@ -8,6 +8,7 @@ import {
   TextField,
   Typography,
 } from '@material-ui/core'
+import {connect} from 'react-redux';
 import { ErrorMessage, Field, Form, Formik } from 'formik'
 import { object, string } from 'yup'
 import get from 'lodash/get'
@@ -15,11 +16,12 @@ import isEmpty from 'lodash/isEmpty'
 import { useSnackbar } from 'notistack'
 import React, { useState } from 'react'
 import { Link, Redirect } from 'react-router-dom'
+import { authAction } from './../actions/shcm.action'
 
 import brandLogoBig from './../appicon.PNG'
 import useStyles from './Login.style'
 
-function Login(props) {
+function Login({ authAction, isAuth }) {
   const formInitialState = {
     username: '',
     password: '',
@@ -33,6 +35,7 @@ function Login(props) {
 
   const onSubmit = (values, { resetForm, setErrors }) => {
     if (values.username === 'admin' && values.password === 'admin') {
+      authAction()
 			resetForm()
 			enqueueSnackbar('Login Successful!', { variant: 'success' })
     } else {
@@ -40,6 +43,10 @@ function Login(props) {
           variant: 'error',
         })
 		}
+  }
+
+  if (isAuth) {
+    return <Redirect to="dashboard" />
   }
 
   return (
@@ -140,7 +147,16 @@ function Login(props) {
   // }
 }
 
+const mapStateToProps = state => ({
+  isAuth: state.isAuth,
+});
+
 /**
- *  @exports connect function of redux
+ *  connect function of redux
  */
-export default Login
+export default connect(
+  mapStateToProps,
+  {
+    authAction,
+  },
+)(Login);
