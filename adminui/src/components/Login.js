@@ -64,6 +64,7 @@ function Login({ authAction, isAuth }) {
         >
           <div className={classes.brandLogo}>
             <img className="brand-logo" src={brandLogoBig} alt="" />
+          <h1 style={{ fontSize: '70px' }}>SHCM</h1>
           </div>
         </Box>
         <Box
