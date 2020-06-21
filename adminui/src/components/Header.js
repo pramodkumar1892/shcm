@@ -51,7 +51,7 @@ export default function ButtonAppBar({ selected }) {
               <Link className={`${classes.linkItem} ${selected==="requests" ? classes.selected : ""}`} to="/requests">Requests</Link>
 						</Typography>
           </div>
-          <Button onClick={() => { window.location = '/login' }} color="inherit" className={classes.logout}>Logout</Button>
+          <Button onClick={() => { window.location = '/' }} color="inherit" className={classes.logout}>Logout</Button>
         </Toolbar>
       </AppBar>
     </div>

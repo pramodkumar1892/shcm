@@ -10,6 +10,7 @@ import {
 } from '@material-ui/core'
 import React, { useState, useEffect } from 'react'
 import { makeStyles } from '@material-ui/core/styles';
+import { Redirect } from 'react-router-dom'
 import Table from '@material-ui/core/Table';
 import Tooltip from '@material-ui/core/Tooltip'
 import IconButton from '@material-ui/core/IconButton'
@@ -27,16 +28,7 @@ import Header from './Header'
 import useStyles from './Login.style'
 import { fetchRequests, updateUser } from './../actions/shcm.action'
 
-function createData(first_name, last_name, email) {
-  return { first_name, last_name, email };
-}
-
-const rows = [
-  createData('Adam', 'Gilchrist', 'adam@aus.com'),
-  createData('max', 'miller', 'max@aus.com'),
-];
- 
-function Requests({ updateUser }) { 
+function Requests({ updateUser, isAuth }) { 
   const classes = useStyles()
   const [requests, setRequests] = useState([])
   useEffect(() => {
@@ -64,6 +56,9 @@ function Requests({ updateUser }) {
         </IconButton>
       </Tooltip>
     )
+  }
+  if (!isAuth) {
+    return <Redirect to="/" />
   }
 	return (
 		<Container component="main" className={classes.root}>
@@ -102,6 +97,7 @@ function Requests({ updateUser }) {
 	// }
 }
 const mapStateToProps = state => ({
+  isAuth: state.isAuth,
 });
 
 export default connect(

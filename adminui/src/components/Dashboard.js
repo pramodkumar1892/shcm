@@ -16,6 +16,7 @@ import {
   import TableRow from '@material-ui/core/TableRow';
   import {connect} from 'react-redux';
 	import React from 'react'
+  import { Redirect } from 'react-router-dom'
 	import Header from './Header'
   import useStyles from './Login.style'
   import { fetchTap, fetchSingleTap } from './../actions/shcm.action'
@@ -37,7 +38,7 @@ import {
       });
   };
  
-  function Dashboard({ fetchTap, users }) { 
+  function Dashboard({ fetchTap, users, isAuth }) { 
     const classes = useStyles()
     const [showDetail, setShowDetail] = React.useState(false)
     const [detail, setDetail] = React.useState({})
@@ -62,6 +63,9 @@ import {
     }
     if (showDetail) {
       return <TapDetail detail={detail} onCancel={closeDetail} />
+    }
+    if (!isAuth) {
+      return <Redirect to="/" />
     }
     return (
       <Container component="main" className={classes.root}>
@@ -98,6 +102,7 @@ import {
   
   const mapStateToProps = state => ({
     users: state.users,
+    isAuth: state.isAuth,
   });
   
   /**
