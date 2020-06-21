@@ -148,11 +148,13 @@ const styles = StyleSheet.create({
   },
   pressView: {
     alignItems: 'center',
-    paddingBottom: 20,
+    paddingBottom: 10,
+    paddingTop: 10,
   },
   press: {
     height: 100,
     width: 70,
+    borderRadius: 15,
   },
 });
 
@@ -273,7 +275,7 @@ const Dashboard = ({navigation, fetchTap, user, enterTap}) => {
           <Animated.View style={[animatedStyle]}>
             <Image
               style={styles.press}
-              source={require('./../images/press.png')}
+              source={require('./../images/tap.png')}
             />
           </Animated.View>
         </TouchableWithoutFeedback>

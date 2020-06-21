@@ -31,9 +31,12 @@ const useStyles = makeStyles((theme) => ({
       textDecoration: 'underline',
     },
   },
+  selected: {
+    color: 'red',
+  },
 }));
 
-export default function ButtonAppBar() {
+export default function ButtonAppBar({ selected }) {
   const classes = useStyles();
 
   return (
@@ -42,10 +45,10 @@ export default function ButtonAppBar() {
         <Toolbar className={classes.toolbar}>
 					<div>
 						<Typography variant="h6" className={classes.title}>
-            <Link className={classes.linkItem} to="/dashboard">Home</Link>
+              <Link className={`${classes.linkItem} ${selected==="dashboard" ? classes.selected : ""}`} to="/dashboard">Home</Link>
 						</Typography>
 						<Typography variant="h6" className={classes.title}>
-              <Link className={classes.linkItem} to="/requests">Requests</Link>
+              <Link className={`${classes.linkItem} ${selected==="requests" ? classes.selected : ""}`} to="/requests">Requests</Link>
 						</Typography>
           </div>
           <Button onClick={() => { window.location = '/login' }} color="inherit" className={classes.logout}>Logout</Button>

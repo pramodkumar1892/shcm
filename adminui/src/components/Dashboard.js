@@ -67,7 +67,7 @@ import {
       <Container component="main" className={classes.root}>
 			<CssBaseline />
 			<Paper elevation={0}>
-				<Header />
+				<Header selected="dashboard" />
 				<TableContainer component={Paper}>
       <Table className={classes.table} aria-label="simple table">
         <TableHead>

@@ -10,6 +10,7 @@ const useStyles = makeStyles((theme) => ({
   root: {
     padding: theme.spacing(0),
     height: '100vh',
+    marginTop: '20px'
   },
   paper: {
     marginTop: theme.spacing(0),

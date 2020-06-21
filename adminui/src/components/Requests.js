@@ -69,7 +69,7 @@ function Requests({ updateUser }) {
 		<Container component="main" className={classes.root}>
 			<CssBaseline />
 			<Paper elevation={0}>
-				<Header />
+				<Header selected="requests" />
 				<TableContainer component={Paper}>
       <Table className={classes.table} aria-label="simple table">
         <TableHead>
