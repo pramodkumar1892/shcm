@@ -46,11 +46,18 @@ export const register = (payload, successCallback, failureCallback) => {
     });
 };
 
-export const login = (payload, successCallback, failureCallback) => (dispatch) => {
+export const login = (
+  payload,
+  successCallback,
+  failureCallback,
+) => dispatch => {
   const url = 'http://shcm-project.xyz/api/signin';
   return post(url, payload, {})
     .then(({data}) => {
       const auth = get(data, 'data[0]', {});
+      if (auth.active === 0) {
+        throw new Error('user not active');
+      }
       userAction(auth)(dispatch);
       setAuth(auth);
       if (typeof successCallback === 'function') {

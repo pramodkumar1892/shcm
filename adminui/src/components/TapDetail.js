@@ -36,15 +36,16 @@ function CreateCsr(props) {
                                     <Box style={{ display: 'flex', justifyContent: 'space-between' }}>
                                         <Typography>{`Tap in - ${
                                             tapItem.tap_in
-                                            ? moment(tapItem.tap_in).format('h:mm A')
+                                            ? moment(tapItem.tap_in).format('h:mm:ss A')
                                             : ''
                                         }`}</Typography>
                                         <Typography>{`Tap out - ${
                                             tapItem.tap_out
-                                            ? moment(tapItem.tap_out).format('h:mm A')
+                                            ? moment(tapItem.tap_out).format('h:mm:ss A')
                                             : 'TBA'
                                         }`}</Typography>
                                     </Box>
+                                    {tapItem.reason && <Typography>{`Reason: ${tapItem.reason}`}</Typography>}
                                     <Divider />
                                 </React.Fragment>
                             ))}

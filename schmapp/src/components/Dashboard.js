@@ -250,12 +250,12 @@ const Dashboard = ({navigation, fetchTap, user, enterTap}) => {
                 <ListItem style={styles.listItem} key={tapItem.id}>
                   <Text>{`Tap in - ${
                     tapItem.tap_in
-                      ? moment(tapItem.tap_in).format('h:mm A')
+                      ? moment(tapItem.tap_in).format('h:mm:ss A')
                       : ''
                   }`}</Text>
                   <Text>{`Tap out - ${
                     tapItem.tap_out
-                      ? moment(tapItem.tap_out).format('h:mm A')
+                      ? moment(tapItem.tap_out).format('h:mm:ss A')
                       : 'TBA'
                   }`}</Text>
                 </ListItem>
