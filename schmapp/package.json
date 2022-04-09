@@ -17,7 +17,7 @@
     "formik": "^2.1.4",
     "lodash.get": "^4.4.2",
     "lodash.isempty": "^4.4.0",
-    "moment": "^2.26.0",
+    "moment": "^2.29.2",
     "native-base": "^2.13.12",
     "react": "16.11.0",
     "react-native": "0.62.2",
